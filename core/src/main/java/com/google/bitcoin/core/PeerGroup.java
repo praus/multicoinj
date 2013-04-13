@@ -95,7 +95,7 @@ public class PeerGroup extends AbstractIdleService {
     private VersionMessage versionMessage;
     // A class that tracks recent transactions that have been broadcast across the network, counts how many
     // peers announced them and updates the transaction confidence data. It is passed to each Peer.
-    private final MemoryPool memoryPool;
+    private MemoryPool memoryPool;
     // How many connections we want to have open at the current time. If we lose connections, we'll try opening more
     // until we reach this count.
     @GuardedBy("lock") private int maxConnections;
@@ -178,6 +178,11 @@ public class PeerGroup extends AbstractIdleService {
      */
     public PeerGroup(NetworkParameters params, AbstractBlockChain chain) {
         this(params, chain, null);
+    }
+    
+    public PeerGroup(NetworkParameters params, AbstractBlockChain chain, ClientBootstrap bs, MemoryPool mempool) {
+        this(params, chain, bs);
+        memoryPool = mempool;
     }
     
     /**
@@ -1227,6 +1232,16 @@ public class PeerGroup extends AbstractIdleService {
             }
         }, MoreExecutors.sameThreadExecutor());
         return future;
+    }
+    
+    public void broadcastBlock(Block block) {
+    	for (Peer peer: peers) {
+    		try {
+				peer.sendMessage(block);
+			} catch (IOException e) {
+				log.info("Failed to send block to {}", peer.getAddress(), e);
+			}
+    	}
     }
 
     /**

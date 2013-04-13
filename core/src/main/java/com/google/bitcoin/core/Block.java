@@ -882,7 +882,7 @@ public class Block extends Message {
         return nonce;
     }
 
-    void setNonce(long nonce) {
+    public void setNonce(long nonce) {
         unCacheHeader();
         this.nonce = nonce;
         this.hash = null;
@@ -909,7 +909,10 @@ public class Block extends Message {
         //
         // Here we will do things a bit differently so a new address isn't needed every time. We'll put a simple
         // counter in the scriptSig so every transaction has a different hash.
-        coinbase.addInput(new TransactionInput(params, coinbase, new byte[]{(byte) txCounter++, (byte) 1}));
+        
+        byte[] coinbaseScriptSig = new byte[4];
+        Utils.uint32ToByteArrayLE((int) System.currentTimeMillis()/1000, coinbaseScriptSig, 0);
+        coinbase.addInput(new TransactionInput(params, coinbase, coinbaseScriptSig));
         coinbase.addOutput(new TransactionOutput(params, coinbase, value, Script.createOutputScript(pubKeyTo)));
         transactions.add(coinbase);
         coinbase.setParent(this);
@@ -926,11 +929,21 @@ public class Block extends Message {
         return createNextBlock(to, null, time, EMPTY_BYTES, Utils.toNanoCoins(50, 0));
     }
 
+    public Block createNextMiningBlock(long time, byte[] pubKey, BigInteger coinbaseValue) {
+        Block b = new Block(params);
+        b.version = getVersion();
+        b.setDifficultyTarget(difficultyTarget);
+        b.addCoinbaseTransaction(pubKey, coinbaseValue);
+        b.setPrevBlockHash(getHash());
+        b.setTime(time);
+        return b;
+    }
+    
     /**
      * Returns a solved block that builds on top of this one. This exists for unit tests.
      * In this variant you can specify a public key (pubkey) for use in generating coinbase blocks.
      */
-    Block createNextBlock(Address to, TransactionOutPoint prevOut, long time, byte[] pubKey, BigInteger coinbaseValue) {
+    public Block createNextBlock(Address to, TransactionOutPoint prevOut, long time, byte[] pubKey, BigInteger coinbaseValue) {
         Block b = new Block(params);
         b.setDifficultyTarget(difficultyTarget);
         b.addCoinbaseTransaction(pubKey, coinbaseValue);
@@ -1033,5 +1046,5 @@ public class Block extends Message {
     boolean isTransactionBytesValid() {
         return transactionBytesValid;
     }
-
+    
 }
