@@ -106,7 +106,6 @@ public class FullPrunedBlockChain extends AbstractBlockChain {
         Verifyer(final Transaction tx, final List<Script> prevOutScripts, final boolean enforcePayToScriptHash) {
             this.tx = tx; this.prevOutScripts = prevOutScripts; this.enforcePayToScriptHash = enforcePayToScriptHash;
         }
-        @Override
         public VerificationException call() throws Exception {
             try{
                 ListIterator<Script> prevOutIt = prevOutScripts.listIterator();

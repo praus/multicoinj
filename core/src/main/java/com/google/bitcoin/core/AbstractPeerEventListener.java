@@ -46,7 +46,6 @@ public class AbstractPeerEventListener implements PeerEventListener {
         return null;
     }
 
-    @Override
     public void onException(Throwable throwable) {
     }
 }

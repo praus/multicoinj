@@ -333,7 +333,6 @@ public class Wallet implements Serializable, BlockChainListener {
     private void createTransientState() {
         ignoreNextNewBlock = new HashSet<Sha256Hash>();
         txConfidenceListener = new TransactionConfidence.Listener() {
-            @Override
             public void onConfidenceChanged(Transaction tx) {
                 lock.lock();
                 // The invokers unlock us immediately so if an exception is thrown, the lock will be already open.

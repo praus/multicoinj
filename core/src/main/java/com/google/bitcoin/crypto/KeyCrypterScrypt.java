@@ -111,7 +111,6 @@ public class KeyCrypterScrypt implements KeyCrypter, Serializable {
      * @return            The KeyParameter containing the created AES key
      * @throws            KeyCrypterException
      */
-    @Override
     public KeyParameter deriveKey(CharSequence password) throws KeyCrypterException {
         byte[] passwordBytes = null;
         try {
@@ -140,7 +139,6 @@ public class KeyCrypterScrypt implements KeyCrypter, Serializable {
     /**
      * Password based encryption using AES - CBC 256 bits.
      */
-    @Override
     public EncryptedPrivateKey encrypt(byte[] plainBytes, KeyParameter aesKey) throws KeyCrypterException {
         Preconditions.checkNotNull(plainBytes);
         Preconditions.checkNotNull(aesKey);
@@ -174,7 +172,6 @@ public class KeyCrypterScrypt implements KeyCrypter, Serializable {
      * @return                 The decrypted bytes
      * @throws                 KeyCrypterException if bytes could not be decoded to a valid key
      */
-    @Override
     public byte[] decrypt(EncryptedPrivateKey privateKeyToDecode, KeyParameter aesKey) throws KeyCrypterException {
         Preconditions.checkNotNull(privateKeyToDecode);
         Preconditions.checkNotNull(aesKey);
@@ -227,7 +224,6 @@ public class KeyCrypterScrypt implements KeyCrypter, Serializable {
      * Return the EncryptionType enum value which denotes the type of encryption/ decryption that this KeyCrypter
      * can understand.
      */
-    @Override
     public EncryptionType getUnderstoodEncryptionType() {
         return EncryptionType.ENCRYPTED_SCRYPT_AES;
     }
