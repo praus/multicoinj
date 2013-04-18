@@ -86,11 +86,8 @@ public class Miner {
 	}
 	
 	public Miner() throws Exception {
-		
-		
 		//params = NetworkParametersMulticoin.multiNet();
 		params = NetworkParameters.testNet3();
-		params.setSpendableCoinbaseDepth(10);
 		
 		//store = new H2FullPrunedBlockStore(params, "~/miner-chain", Integer.MAX_VALUE);
 		store = new H2FullPrunedBlockStore(params, "~/multinet", Integer.MAX_VALUE);
