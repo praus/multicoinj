@@ -196,7 +196,8 @@ public class NetworkParameters implements Serializable {
             genesisBlock.setDifficultyTarget(0x1d00ffffL);
             genesisBlock.setNonce(414098458);
             allowEmptyPeerChains = true;
-            spendableCoinbaseDepth = 100;
+            // MulticoinJ: changed coinbase maturity to 3 for compatibility with Multicoin (C++) 
+            spendableCoinbaseDepth = 3;
             subsidyDecreaseBlockCount = 210000;
             String genesisHash = genesisBlock.getHashAsString();
             checkState(genesisHash.equals("000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"),
