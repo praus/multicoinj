@@ -206,9 +206,9 @@ public class Miner {
 		}
 		block.setNonce(solvedBlockHeader.getNonce());
 		
-		log.info("solved block: {}", solvedBlockHeader.getHash());
-		log.info("Block to broadcast: {}", block.getHash());
-		log.info("block transactions: {}", block.getTransactions());
+		log.debug("solved block: {}", solvedBlockHeader.getHash());
+		log.debug("Block to broadcast: {}", block.getHash());
+		log.debug("block transactions: {}", block.getTransactions());
 		
 		boolean success = false;
 		try {
@@ -218,6 +218,7 @@ public class Miner {
 			if (success) {
 				log.info("Broadcasting: {}\n{}", block.getHash(), block);
 				peerGroup.broadcastBlock(block);
+				log.debug("Active TXs before clear: {}", activeTransactions);
 				activeTransactions.clear();
 				reloadBlock(true);
 			}
