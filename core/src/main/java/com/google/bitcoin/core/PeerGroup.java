@@ -1236,11 +1236,7 @@ public class PeerGroup extends AbstractIdleService {
     
     public void broadcastBlock(Block block) {
     	for (Peer peer: peers) {
-    		try {
-				peer.sendMessage(block);
-			} catch (IOException e) {
-				log.info("Failed to send block to {}", peer.getAddress(), e);
-			}
+    		peer.sendMessage(block);
     	}
     }
 
