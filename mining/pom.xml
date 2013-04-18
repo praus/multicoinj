@@ -21,15 +21,14 @@
     <parent>
         <groupId>com.google</groupId>
         <artifactId>bitcoinj-parent</artifactId>
-        <version>0.7</version>
+        <version>0.8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.google</groupId>
     <artifactId>bitcoinj-mining</artifactId>
 
-    <name>bitcoinj Mining</name>
-    <description>mining</description>
+    <name>bitcoinj-mining</name>
+    <description>Very simple getwork implementation</description>
 
     <dependencies>
 		<dependency>
