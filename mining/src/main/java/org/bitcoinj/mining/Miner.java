@@ -26,6 +26,7 @@ import com.google.bitcoin.core.PeerGroup;
 import com.google.bitcoin.core.PrunedException;
 import com.google.bitcoin.core.Sha256Hash;
 import com.google.bitcoin.core.Transaction;
+import com.google.bitcoin.core.UpdateDifficultyMessage;
 import com.google.bitcoin.core.Utils;
 import com.google.bitcoin.core.VerificationException;
 import com.google.bitcoin.core.Wallet;
@@ -153,8 +154,14 @@ public class Miner {
 				super.onBlocksDownloaded(peer, block, blocksLeft);
 				log.info("New block from {}:\n{}", peer, chain.getChainHead());
 				reloadBlock();
-			}
-		});
+            }
+
+            @Override
+            public void onDifficultyChange(Peer peer, UpdateDifficultyMessage m) {
+                log.info("Received update diff message: {}", m);
+                super.onDifficultyChange(peer, m);
+            }
+        });
 		
 		
 		reloadBlock();
@@ -163,6 +170,8 @@ public class Miner {
 		
 		log.info("Wallet balance: {}", wallet.getBalance());
 		
+		log.info("difficulty: {}", chain.getChainHead().getHeader().getDifficultyTarget());
+
 		Object lock = new Object();
 		while (true) {
 			synchronized (lock) {

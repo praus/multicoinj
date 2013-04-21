@@ -48,4 +48,8 @@ public class AbstractPeerEventListener implements PeerEventListener {
 
     public void onException(Throwable throwable) {
     }
+    
+    @Override
+    public void onDifficultyChange(Peer peer, UpdateDifficultyMessage m) {
+    }
 }

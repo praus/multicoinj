@@ -21,6 +21,11 @@
 	</appender>
 
 	<logger name="com.google" level="INFO" />
+	<!--
+	<logger name="com.google.bitcoin.core.BitcoinSerializer" level="DEBUG" />
+	<logger name="com.google.bitcoin.core.Peer" level="DEBUG" />
+	<logger name="com.google.bitcoin.core.PeerGroup" level="DEBUG" />
+	 -->
 	<logger name="org.bitcoinj" level="INFO" />
 	<logger name="com.google.bitcoin.core.MemoryPool" level="WARN" />
 	<logger name="org.bitcoinj.mining" level="DEBUG" />

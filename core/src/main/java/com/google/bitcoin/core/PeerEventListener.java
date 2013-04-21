@@ -85,4 +85,12 @@ public interface PeerEventListener {
      * runs the peer will be disconnected. Any exceptions thrown by this method will be logged and ignored.
      */
     public void onException(Throwable throwable);
+    
+    /**
+     * MulticoinJ extension. Called when a difficulty change message is received.
+     * 
+     * @param peer
+     * @param m
+     */
+    public void onDifficultyChange(Peer peer, UpdateDifficultyMessage m);
 }

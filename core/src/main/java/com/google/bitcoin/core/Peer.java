@@ -304,6 +304,8 @@ public class Peer {
                     sendMessage(new Pong(((Ping) m).getNonce()));
             } else if (m instanceof Pong) {
                 processPong((Pong)m);
+            } else if (m instanceof UpdateDifficultyMessage) {
+                processUpdateDifficulty((UpdateDifficultyMessage) m);
             } else {
                 log.warn("Received unhandled message: {}", m);
             }
@@ -1236,6 +1238,24 @@ public class Peer {
                 ping.complete();
                 return;
             }
+        }
+    }
+    
+    // MulticoinJ extension
+    private void processUpdateDifficulty(UpdateDifficultyMessage m) {
+        // a little hack, we use memory pool to keep track of our
+        if (memoryPool.maybeWasSeen(m.getHash())) {
+            // we've already seen this message, ignore it
+            log.debug("Ignoring update difficulty message {}", m);
+            return;
+        }
+
+        if (memoryPool != null) {
+            memoryPool.seen(m.getHash(), getAddress());
+        }
+
+        for (PeerEventListener listener : eventListeners) {
+            listener.onDifficultyChange(this, m);
         }
     }
 
