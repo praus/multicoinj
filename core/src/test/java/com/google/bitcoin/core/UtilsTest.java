@@ -18,7 +18,10 @@ package com.google.bitcoin.core;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.math.BigInteger;
 
 import static com.google.bitcoin.core.Utils.*;
@@ -27,6 +30,8 @@ import static org.junit.Assert.assertTrue;
 
 public class UtilsTest {
 
+    public Logger log = LoggerFactory.getLogger(UtilsTest.class.getName());
+    
     @Test
     public void testToNanoCoins() {
         // String version
@@ -105,5 +110,25 @@ public class UtilsTest {
         Assert.assertArrayEquals(new byte[] {1,2,3,4}, Utils.reverseDwordBytes(new byte[] {4,3,2,1,8,7,6,5}, 4));
         Assert.assertArrayEquals(new byte[0], Utils.reverseDwordBytes(new byte[] {4,3,2,1,8,7,6,5}, 0));
         Assert.assertArrayEquals(new byte[0], Utils.reverseDwordBytes(new byte[0], 0));
+    }
+    
+    @Test
+    public void testLoadPrivKey() throws Exception {
+        byte[] buf = loadFromResource("privkey.ecdsa");
+        String expected = "308201130201010420b31bd783bb35c7e7e950d9e9623c1c590af52dfb379bcdf570cf95c8d8a01b24a081a53081a2020101302c06072a8648ce3d0101022100fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f300604010004010704410479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8022100fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141020101a14403420004fcc15bcb995c0f46ca0b72dba0ceb72bba2a622435b504ddab117d60df03808e3a83d07d66340d5e9add610a6783ec239ecc23487c10bc4a1081211f389a33f7";
+        Assert.assertTrue(expected.equals(Utils.bytesToHexString(buf)));
+    }
+    
+    @Test
+    public void testLoadPubKey() throws Exception {
+        byte[] buf = loadFromResource("pubkey.ecdsa");
+        System.out.println(Utils.bytesToHexString(buf));
+        String expected = "04fcc15bcb995c0f46ca0b72dba0ceb72bba2a622435b504ddab117d60df03808e3a83d07d66340d5e9add610a6783ec239ecc23487c10bc4a1081211f389a33f7";
+        Assert.assertTrue(expected.equals(Utils.bytesToHexString(buf)));
+    }
+    
+    private byte[] loadFromResource(final String resourceName) throws Exception {
+        InputStream in = getClass().getResourceAsStream(resourceName);
+        return Utils.readDiskSerializedStream(in);
     }
 }

@@ -1250,6 +1250,12 @@ public class Peer {
             return;
         }
 
+        if (!m.isSignatureValid()) {
+            log.warn("Signature for diffupdate {} is NOT valid", m.getHash());
+            return;
+        }
+        log.info("Signature for diffupdate {} is valid", m.getHash());
+        
         if (memoryPool != null) {
             memoryPool.seen(m.getHash(), getAddress());
         }
@@ -1257,6 +1263,8 @@ public class Peer {
         for (PeerEventListener listener : eventListeners) {
             listener.onDifficultyChange(this, m);
         }
+        
+        // broadcast to other peers
     }
 
     /**

@@ -41,6 +41,7 @@ import com.google.bitcoin.crypto.KeyCrypterException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -818,5 +819,23 @@ public class ECKey implements Serializable {
      */
     public KeyCrypter getKeyCrypter() {
         return keyCrypter;
+    }
+
+    /**
+     * This is for loading a key (public or private) from a bitcoin-serialized
+     * file.
+     * 
+     * @param path
+     *            to the file with SER_DISK serialized key
+     * @return ECKey from file
+     */
+    public static ECKey loadKeyFromStream(final InputStream privInStream, final InputStream pubInStream)
+            throws IOException {
+        // final int PRIVKEY_LEN = 279; // secp256k1 has 279 bytes
+        // final int PUBKEY_LEN = 65; // public key has 65 bytes
+
+        byte[] privKeyBytes = Utils.readDiskSerializedStream(privInStream);
+        byte[] pubKeyBytes = Utils.readDiskSerializedStream(pubInStream);
+        return new ECKey(privKeyBytes, pubKeyBytes);
     }
 }

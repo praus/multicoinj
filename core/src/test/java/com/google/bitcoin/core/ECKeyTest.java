@@ -22,6 +22,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.security.SignatureException;
@@ -29,6 +32,7 @@ import java.util.Arrays;
 
 import org.bitcoinj.wallet.Protos;
 import org.bitcoinj.wallet.Protos.ScryptParameters;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -36,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.spongycastle.crypto.params.KeyParameter;
 import org.spongycastle.util.encoders.Hex;
 
+import com.google.bitcoin.core.ECKey.ECDSASignature;
 import com.google.bitcoin.crypto.EncryptedPrivateKey;
 import com.google.bitcoin.crypto.KeyCrypter;
 import com.google.bitcoin.crypto.KeyCrypterScrypt;
@@ -410,5 +415,19 @@ public class ECKeyTest {
             }
             return true;
         }
+    }
+    
+    @Test
+    public void testLoadKeyFromFile() throws Exception {
+        InputStream privIn = getClass().getResourceAsStream("privkey.ecdsa");
+        InputStream pubIn = getClass().getResourceAsStream("pubkey.ecdsa");
+        ECKey key = ECKey.loadKeyFromStream(privIn, pubIn);
+        System.out.println(key);
+        
+        assertTrue("Key should be uncompressed", !key.isCompressed());
+        
+        ECDSASignature sig = key.sign(new Sha256Hash(Utils.doubleDigest("ahoj".getBytes())));
+        System.out.println(Utils.bytesToHexString(sig.encodeToDER()));
+        // TODO: improve this
     }
 }

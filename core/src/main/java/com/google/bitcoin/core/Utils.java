@@ -17,10 +17,14 @@
 package com.google.bitcoin.core;
 
 import com.google.common.primitives.UnsignedLongs;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.util.encoders.Hex;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,6 +35,7 @@ import java.util.Date;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A collection of various utility methods that are helpful for working with the Bitcoin protocol.
@@ -501,5 +506,29 @@ public class Utils {
     // Sets the given bit in data to one
     public static void setBitLE(byte[] data, int index) {
         data[index >>> 3] |= bitMask[7 & index];
+    }
+    
+    public static byte[] readDiskSerializedStream(final InputStream in) throws IOException {
+        byte[] bufVarInt = new byte[9]; // VarInt is at most 9 bytes long
+        checkState(in.read(bufVarInt, 0, 1) == 1, "The file is empty");
+        int first = 0xFF & bufVarInt[0];
+        int varIntLen = 8; // 64 bits
+        if (first < 253) {
+            // 8 bits.
+            varIntLen = 0;
+        } else if (first == 253) {
+            // 16 bits.
+            varIntLen = 2;
+        } else if (first == 254) {
+            // 32 bits.
+            varIntLen = 4;
+        }
+        checkState(in.read(bufVarInt, 1, varIntLen) == varIntLen, "File is shorter than it should be");
+        VarInt varint = new VarInt(bufVarInt, 0);
+        int contentLen = (int) varint.value;
+        byte[] buf = new byte[contentLen];
+        checkState(in.read(buf, 0, contentLen) == contentLen, "File is shorter than it should be");
+        checkState(in.read() == -1, "Extra bytes at the end of key file");
+        return buf;
     }
 }

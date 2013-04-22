@@ -32,6 +32,7 @@ import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.views.AbstractView;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -145,10 +146,22 @@ public class PeerGroup extends AbstractIdleService {
             handlePeerDeath(peer);
         }
     }
+    
+    private class UpdateDifficultyBroadcaster extends AbstractPeerEventListener {
+        @Override
+        public void onDifficultyChange(Peer receivedFrom, UpdateDifficultyMessage m) {
+            // we've received an update difficulty message, broadcast it to everyone
+            for (Peer peer: peers) {
+                if (!peer.equals(receivedFrom)) { // don't send to the peer we received the message from
+                    peer.sendMessage(m);
+                }
+            }
+        }
+    }
 
     // Visible for testing
     Peer.PeerLifecycleListener startupListener = new PeerStartupListener();
-
+    
     // A bloom filter generated from all connected wallets that is given to new peers
     private BloomFilter bloomFilter;
     /** A reasonable default for the bloom filter false positive rate on mainnet.
@@ -268,6 +281,9 @@ public class PeerGroup extends AbstractIdleService {
 
                 Peer peer = new Peer(params, chain, ver, memoryPool);
                 peer.addLifecycleListener(startupListener);
+
+                // Each peer has it's own broadcaster
+                peer.addEventListener(new UpdateDifficultyBroadcaster());
                 pendingPeers.add(peer);
                 TCPNetworkConnection codec = new TCPNetworkConnection(params, peer.getVersionMessage());
                 p.addLast("codec", codec.getHandler());
