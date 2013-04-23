@@ -255,7 +255,9 @@ public class BitcoinSerializer {
         } else if (command.equals("mempool")) {
             return new MemoryPoolMessage();
         } else if (command.equals("updatediff")) {
-            return new UpdateDifficultyMessage(params, payloadBytes);
+            // always retain this message parsed (bytes array), we're never changing it
+            boolean retain = true;
+            return new UpdateDifficultyMessage(params, payloadBytes, retain, length);
         } else {
             log.warn("No support for deserializing message with name {}", command);
             return new UnknownMessage(params, command, payloadBytes);

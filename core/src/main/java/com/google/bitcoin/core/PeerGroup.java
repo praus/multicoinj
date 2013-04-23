@@ -153,6 +153,7 @@ public class PeerGroup extends AbstractIdleService {
             // we've received an update difficulty message, broadcast it to everyone
             for (Peer peer: peers) {
                 if (!peer.equals(receivedFrom)) { // don't send to the peer we received the message from
+                    log.info("Relaying updatediff msg to {}", peer);
                     peer.sendMessage(m);
                 }
             }
@@ -1251,9 +1252,9 @@ public class PeerGroup extends AbstractIdleService {
     }
     
     public void broadcastBlock(Block block) {
-    	for (Peer peer: peers) {
-    		peer.sendMessage(block);
-    	}
+        for (Peer peer : peers) {
+            peer.sendMessage(block);
+        }
     }
 
     /**

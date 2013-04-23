@@ -28,8 +28,10 @@ public class UpdateDifficultyMessage extends Message {
     private transient BigInteger timestampBig;
     private transient BigInteger expirationBig;
 
-    public UpdateDifficultyMessage(NetworkParameters params, byte[] payloadBytes) throws ProtocolException {
-        super(params, payloadBytes, 0);
+    
+    
+    public UpdateDifficultyMessage(NetworkParameters params, byte[] payloadBytes, boolean parseRetain, int length) throws ProtocolException {
+        super(params, payloadBytes, 0, false, parseRetain, length);
     }
 
     @Override
@@ -43,7 +45,6 @@ public class UpdateDifficultyMessage extends Message {
         newDiff = readUint32();
 
         // Read the timestamps. Bitcoin uses seconds since the epoch.
-
         timestampBig = readUint64();
         expirationBig = readUint64();
 
