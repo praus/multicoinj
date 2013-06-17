@@ -90,11 +90,12 @@ message TransactionInput {
 
 message TransactionOutput {
   required int64 value = 1;
-  required bytes script_bytes = 2;    // script of transaction output
+  required int64 currency = 2;
+  required bytes script_bytes = 3;    // script of transaction output
   // If spent, the hash of the transaction doing the spend.
-  optional bytes spent_by_transaction_hash = 3;
+  optional bytes spent_by_transaction_hash = 4;
   // If spent, the index of the transaction input of the transaction doing the spend.
-  optional int32 spent_by_transaction_index = 4;
+  optional int32 spent_by_transaction_index = 5;
 }
 
 /**

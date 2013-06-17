@@ -140,6 +140,8 @@ public class NetworkParameters implements Serializable {
      */
     public Map<Integer, Sha256Hash> checkpoints = new HashMap<Integer, Sha256Hash>();
 
+    public static BigInteger DEFAULT_CURRENCY = new BigInteger("0");
+    
     private NetworkParameters(int type) {
         alertSigningKey = SATOSHI_KEY;
         genesisBlock = createGenesis(this);
@@ -183,7 +185,10 @@ public class NetworkParameters implements Serializable {
         } else if (type == 3) {
             // Testnet3
             id = ID_TESTNET;
-            // Genesis hash is 000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943
+            // Genesis hash is 0000000028878728aad01d8531b0a42fb0eda3a63a55e7a72e5a51d9a5277b4a
+//            "time" : 1367981880,
+//            "nonce" : 445939925,
+//            "bits" : "1d00ffff",
             packetMagic = 0x0b110907;
             interval = INTERVAL;
             targetTimespan = TARGET_TIMESPAN;
@@ -192,15 +197,15 @@ public class NetworkParameters implements Serializable {
             addressHeader = 111;
             acceptableAddressCodes = new int[] { 111 };
             dumpedPrivateKeyHeader = 239;
-            genesisBlock.setTime(1296688602L);
+            genesisBlock.setTime(1367981880L);
             genesisBlock.setDifficultyTarget(0x1d00ffffL);
-            genesisBlock.setNonce(414098458);
+            genesisBlock.setNonce(445939925);
             allowEmptyPeerChains = true;
             // MulticoinJ: changed coinbase maturity to 3 for compatibility with Multicoin (C++) 
             spendableCoinbaseDepth = 3;
             subsidyDecreaseBlockCount = 210000;
             String genesisHash = genesisBlock.getHashAsString();
-            checkState(genesisHash.equals("000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"),
+            checkState(genesisHash.equals("0000000028878728aad01d8531b0a42fb0eda3a63a55e7a72e5a51d9a5277b4a"),
                     genesisHash);
 
             dnsSeeds = new String[] {
@@ -254,16 +259,15 @@ public class NetworkParameters implements Serializable {
         Transaction t = new Transaction(n);
         try {
             // A script containing the difficulty bits and the following message:
-            //
-            //   "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"
+            // "thisisparentchain"
             byte[] bytes = Hex.decode
-                    ("04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73");
+                    ("04ffff001d010445746869736973706172656e74636861696e");
             t.addInput(new TransactionInput(n, t, bytes));
             ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
             Script.writeBytes(scriptPubKeyBytes, Hex.decode
                     ("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f"));
             scriptPubKeyBytes.write(Script.OP_CHECKSIG);
-            t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(50, 0), scriptPubKeyBytes.toByteArray()));
+            t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(50, 0), DEFAULT_CURRENCY, scriptPubKeyBytes.toByteArray()));
         } catch (Exception e) {
             // Cannot happen.
             throw new RuntimeException(e);

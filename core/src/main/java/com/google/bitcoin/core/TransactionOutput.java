@@ -39,6 +39,7 @@ public class TransactionOutput extends ChildMessage implements Serializable {
     // A transaction output has some value and a script used for authenticating that the redeemer is allowed to spend
     // this output.
     private BigInteger value;
+    private BigInteger currency;
     private byte[] scriptBytes;
 
     // The script bytes are parsed and turned into a Script on demand.
@@ -89,8 +90,8 @@ public class TransactionOutput extends ChildMessage implements Serializable {
      * something like {@link Utils#toNanoCoins(int, int)}. Typically you would use
      * {@link Transaction#addOutput(java.math.BigInteger, Address)} instead of creating a TransactionOutput directly.
      */
-    public TransactionOutput(NetworkParameters params, Transaction parent, BigInteger value, Address to) {
-        this(params, parent, value, Script.createOutputScript(to));
+    public TransactionOutput(NetworkParameters params, Transaction parent, BigInteger value, BigInteger currency, Address to) {
+        this(params, parent, value, currency, Script.createOutputScript(to));
     }
 
     /**
@@ -98,13 +99,14 @@ public class TransactionOutput extends ChildMessage implements Serializable {
      * amount should be created with something like {@link Utils#toNanoCoins(int, int)}. Typically you would use
      * {@link Transaction#addOutput(java.math.BigInteger, ECKey)} instead of creating an output directly.
      */
-    public TransactionOutput(NetworkParameters params, Transaction parent, BigInteger value, ECKey to) {
-        this(params, parent, value, Script.createOutputScript(to));
+    public TransactionOutput(NetworkParameters params, Transaction parent, BigInteger value, BigInteger currency, ECKey to) {
+        this(params, parent, value, currency, Script.createOutputScript(to));
     }
 
-    public TransactionOutput(NetworkParameters params, Transaction parent, BigInteger value, byte[] scriptBytes) {
+    public TransactionOutput(NetworkParameters params, Transaction parent, BigInteger value, BigInteger currency, byte[] scriptBytes) {
         super(params);
         this.value = value;
+        this.currency = currency;
         this.scriptBytes = scriptBytes;
         parentTransaction = parent;
         availableForSpending = true;

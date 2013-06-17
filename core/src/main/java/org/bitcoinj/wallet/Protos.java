@@ -2300,15 +2300,19 @@ public final class Protos {
     boolean hasValue();
     long getValue();
     
-    // required bytes script_bytes = 2;
+    // required int64 currency = 2;
+    boolean hasCurrency();
+    long getCurrency();
+    
+    // required bytes script_bytes = 3;
     boolean hasScriptBytes();
     com.google.protobuf.ByteString getScriptBytes();
     
-    // optional bytes spent_by_transaction_hash = 3;
+    // optional bytes spent_by_transaction_hash = 4;
     boolean hasSpentByTransactionHash();
     com.google.protobuf.ByteString getSpentByTransactionHash();
     
-    // optional int32 spent_by_transaction_index = 4;
+    // optional int32 spent_by_transaction_index = 5;
     boolean hasSpentByTransactionIndex();
     int getSpentByTransactionIndex();
   }
@@ -2351,31 +2355,41 @@ public final class Protos {
       return value_;
     }
     
-    // required bytes script_bytes = 2;
-    public static final int SCRIPT_BYTES_FIELD_NUMBER = 2;
+    // required int64 currency = 2;
+    public static final int CURRENCY_FIELD_NUMBER = 2;
+    private long currency_;
+    public boolean hasCurrency() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public long getCurrency() {
+      return currency_;
+    }
+    
+    // required bytes script_bytes = 3;
+    public static final int SCRIPT_BYTES_FIELD_NUMBER = 3;
     private com.google.protobuf.ByteString scriptBytes_;
     public boolean hasScriptBytes() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     public com.google.protobuf.ByteString getScriptBytes() {
       return scriptBytes_;
     }
     
-    // optional bytes spent_by_transaction_hash = 3;
-    public static final int SPENT_BY_TRANSACTION_HASH_FIELD_NUMBER = 3;
+    // optional bytes spent_by_transaction_hash = 4;
+    public static final int SPENT_BY_TRANSACTION_HASH_FIELD_NUMBER = 4;
     private com.google.protobuf.ByteString spentByTransactionHash_;
     public boolean hasSpentByTransactionHash() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     public com.google.protobuf.ByteString getSpentByTransactionHash() {
       return spentByTransactionHash_;
     }
     
-    // optional int32 spent_by_transaction_index = 4;
-    public static final int SPENT_BY_TRANSACTION_INDEX_FIELD_NUMBER = 4;
+    // optional int32 spent_by_transaction_index = 5;
+    public static final int SPENT_BY_TRANSACTION_INDEX_FIELD_NUMBER = 5;
     private int spentByTransactionIndex_;
     public boolean hasSpentByTransactionIndex() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     public int getSpentByTransactionIndex() {
       return spentByTransactionIndex_;
@@ -2383,6 +2397,7 @@ public final class Protos {
     
     private void initFields() {
       value_ = 0L;
+      currency_ = 0L;
       scriptBytes_ = com.google.protobuf.ByteString.EMPTY;
       spentByTransactionHash_ = com.google.protobuf.ByteString.EMPTY;
       spentByTransactionIndex_ = 0;
@@ -2393,6 +2408,10 @@ public final class Protos {
       if (isInitialized != -1) return isInitialized == 1;
       
       if (!hasValue()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCurrency()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -2411,13 +2430,16 @@ public final class Protos {
         output.writeInt64(1, value_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, scriptBytes_);
+        output.writeInt64(2, currency_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, spentByTransactionHash_);
+        output.writeBytes(3, scriptBytes_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, spentByTransactionIndex_);
+        output.writeBytes(4, spentByTransactionHash_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, spentByTransactionIndex_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2434,15 +2456,19 @@ public final class Protos {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, scriptBytes_);
+          .computeInt64Size(2, currency_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, spentByTransactionHash_);
+          .computeBytesSize(3, scriptBytes_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, spentByTransactionIndex_);
+          .computeBytesSize(4, spentByTransactionHash_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, spentByTransactionIndex_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2570,12 +2596,14 @@ public final class Protos {
         super.clear();
         value_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
-        scriptBytes_ = com.google.protobuf.ByteString.EMPTY;
+        currency_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
-        spentByTransactionHash_ = com.google.protobuf.ByteString.EMPTY;
+        scriptBytes_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
-        spentByTransactionIndex_ = 0;
+        spentByTransactionHash_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000008);
+        spentByTransactionIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -2621,13 +2649,17 @@ public final class Protos {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.scriptBytes_ = scriptBytes_;
+        result.currency_ = currency_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.spentByTransactionHash_ = spentByTransactionHash_;
+        result.scriptBytes_ = scriptBytes_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
+        }
+        result.spentByTransactionHash_ = spentByTransactionHash_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
         }
         result.spentByTransactionIndex_ = spentByTransactionIndex_;
         result.bitField0_ = to_bitField0_;
@@ -2649,6 +2681,9 @@ public final class Protos {
         if (other.hasValue()) {
           setValue(other.getValue());
         }
+        if (other.hasCurrency()) {
+          setCurrency(other.getCurrency());
+        }
         if (other.hasScriptBytes()) {
           setScriptBytes(other.getScriptBytes());
         }
@@ -2664,6 +2699,10 @@ public final class Protos {
       
       public final boolean isInitialized() {
         if (!hasValue()) {
+          
+          return false;
+        }
+        if (!hasCurrency()) {
           
           return false;
         }
@@ -2702,18 +2741,23 @@ public final class Protos {
               value_ = input.readInt64();
               break;
             }
-            case 18: {
+            case 16: {
               bitField0_ |= 0x00000002;
-              scriptBytes_ = input.readBytes();
+              currency_ = input.readInt64();
               break;
             }
             case 26: {
               bitField0_ |= 0x00000004;
+              scriptBytes_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
               spentByTransactionHash_ = input.readBytes();
               break;
             }
-            case 32: {
-              bitField0_ |= 0x00000008;
+            case 40: {
+              bitField0_ |= 0x00000010;
               spentByTransactionIndex_ = input.readInt32();
               break;
             }
@@ -2744,10 +2788,31 @@ public final class Protos {
         return this;
       }
       
-      // required bytes script_bytes = 2;
+      // required int64 currency = 2;
+      private long currency_ ;
+      public boolean hasCurrency() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public long getCurrency() {
+        return currency_;
+      }
+      public Builder setCurrency(long value) {
+        bitField0_ |= 0x00000002;
+        currency_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearCurrency() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        currency_ = 0L;
+        onChanged();
+        return this;
+      }
+      
+      // required bytes script_bytes = 3;
       private com.google.protobuf.ByteString scriptBytes_ = com.google.protobuf.ByteString.EMPTY;
       public boolean hasScriptBytes() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       public com.google.protobuf.ByteString getScriptBytes() {
         return scriptBytes_;
@@ -2756,22 +2821,22 @@ public final class Protos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         scriptBytes_ = value;
         onChanged();
         return this;
       }
       public Builder clearScriptBytes() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         scriptBytes_ = getDefaultInstance().getScriptBytes();
         onChanged();
         return this;
       }
       
-      // optional bytes spent_by_transaction_hash = 3;
+      // optional bytes spent_by_transaction_hash = 4;
       private com.google.protobuf.ByteString spentByTransactionHash_ = com.google.protobuf.ByteString.EMPTY;
       public boolean hasSpentByTransactionHash() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       public com.google.protobuf.ByteString getSpentByTransactionHash() {
         return spentByTransactionHash_;
@@ -2780,34 +2845,34 @@ public final class Protos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         spentByTransactionHash_ = value;
         onChanged();
         return this;
       }
       public Builder clearSpentByTransactionHash() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         spentByTransactionHash_ = getDefaultInstance().getSpentByTransactionHash();
         onChanged();
         return this;
       }
       
-      // optional int32 spent_by_transaction_index = 4;
+      // optional int32 spent_by_transaction_index = 5;
       private int spentByTransactionIndex_ ;
       public boolean hasSpentByTransactionIndex() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       public int getSpentByTransactionIndex() {
         return spentByTransactionIndex_;
       }
       public Builder setSpentByTransactionIndex(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         spentByTransactionIndex_ = value;
         onChanged();
         return this;
       }
       public Builder clearSpentByTransactionIndex() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         spentByTransactionIndex_ = 0;
         onChanged();
         return this;
@@ -8312,46 +8377,46 @@ public final class Protos {
       "T_AES\020\002\"\203\001\n\020TransactionInput\022\"\n\032transact" +
       "ion_out_point_hash\030\001 \002(\014\022#\n\033transaction_" +
       "out_point_index\030\002 \002(\005\022\024\n\014script_bytes\030\003 " +
-      "\002(\014\022\020\n\010sequence\030\004 \001(\r\"\177\n\021TransactionOutp" +
-      "ut\022\r\n\005value\030\001 \002(\003\022\024\n\014script_bytes\030\002 \002(\014\022" +
-      "!\n\031spent_by_transaction_hash\030\003 \001(\014\022\"\n\032sp" +
-      "ent_by_transaction_index\030\004 \001(\005\"\246\003\n\025Trans" +
-      "actionConfidence\0220\n\004type\030\001 \001(\0162\".wallet." +
-      "TransactionConfidence.Type\022\032\n\022appeared_a" +
-      "t_height\030\002 \001(\005\022\036\n\026overriding_transaction",
-      "\030\003 \001(\014\022\r\n\005depth\030\004 \001(\005\022\021\n\twork_done\030\005 \001(\003" +
-      "\022)\n\014broadcast_by\030\006 \003(\0132\023.wallet.PeerAddr" +
-      "ess\0224\n\006source\030\007 \001(\0162$.wallet.Transaction" +
-      "Confidence.Source\"Y\n\004Type\022\013\n\007UNKNOWN\020\000\022\014" +
-      "\n\010BUILDING\020\001\022\025\n\021NOT_SEEN_IN_CHAIN\020\002\022\025\n\021N" +
-      "OT_IN_BEST_CHAIN\020\003\022\010\n\004DEAD\020\004\"A\n\006Source\022\022" +
-      "\n\016SOURCE_UNKNOWN\020\000\022\022\n\016SOURCE_NETWORK\020\001\022\017" +
-      "\n\013SOURCE_SELF\020\002\"\211\003\n\013Transaction\022\017\n\007versi" +
-      "on\030\001 \002(\005\022\014\n\004hash\030\002 \002(\014\022&\n\004pool\030\003 \001(\0162\030.w" +
-      "allet.Transaction.Pool\022\021\n\tlock_time\030\004 \001(",
-      "\r\022\022\n\nupdated_at\030\005 \001(\003\0223\n\021transaction_inp" +
-      "ut\030\006 \003(\0132\030.wallet.TransactionInput\0225\n\022tr" +
-      "ansaction_output\030\007 \003(\0132\031.wallet.Transact" +
-      "ionOutput\022\022\n\nblock_hash\030\010 \003(\014\0221\n\nconfide" +
-      "nce\030\t \001(\0132\035.wallet.TransactionConfidence" +
-      "\"Y\n\004Pool\022\013\n\007UNSPENT\020\004\022\t\n\005SPENT\020\005\022\014\n\010INAC" +
-      "TIVE\020\002\022\010\n\004DEAD\020\n\022\013\n\007PENDING\020\020\022\024\n\020PENDING" +
-      "_INACTIVE\020\022\"N\n\020ScryptParameters\022\014\n\004salt\030" +
-      "\001 \002(\014\022\020\n\001n\030\002 \001(\003:\00516384\022\014\n\001r\030\003 \001(\005:\0018\022\014\n" +
-      "\001p\030\004 \001(\005:\0011\"8\n\tExtension\022\n\n\002id\030\001 \002(\t\022\014\n\004",
-      "data\030\002 \002(\014\022\021\n\tmandatory\030\003 \002(\010\"\255\003\n\006Wallet" +
-      "\022\032\n\022network_identifier\030\001 \002(\t\022\034\n\024last_see" +
-      "n_block_hash\030\002 \001(\014\022\036\n\026last_seen_block_he" +
-      "ight\030\014 \001(\r\022\030\n\003key\030\003 \003(\0132\013.wallet.Key\022(\n\013" +
-      "transaction\030\004 \003(\0132\023.wallet.Transaction\022C" +
-      "\n\017encryption_type\030\005 \001(\0162\035.wallet.Wallet." +
-      "EncryptionType:\013UNENCRYPTED\0227\n\025encryptio" +
-      "n_parameters\030\006 \001(\0132\030.wallet.ScryptParame" +
-      "ters\022\017\n\007version\030\007 \001(\005\022$\n\textension\030\n \003(\013" +
-      "2\021.wallet.Extension\022\023\n\013description\030\013 \001(\t",
-      "\";\n\016EncryptionType\022\017\n\013UNENCRYPTED\020\001\022\030\n\024E" +
-      "NCRYPTED_SCRYPT_AES\020\002B\035\n\023org.bitcoinj.wa" +
-      "lletB\006Protos"
+      "\002(\014\022\020\n\010sequence\030\004 \001(\r\"\221\001\n\021TransactionOut" +
+      "put\022\r\n\005value\030\001 \002(\003\022\020\n\010currency\030\002 \002(\003\022\024\n\014" +
+      "script_bytes\030\003 \002(\014\022!\n\031spent_by_transacti" +
+      "on_hash\030\004 \001(\014\022\"\n\032spent_by_transaction_in" +
+      "dex\030\005 \001(\005\"\246\003\n\025TransactionConfidence\0220\n\004t" +
+      "ype\030\001 \001(\0162\".wallet.TransactionConfidence" +
+      ".Type\022\032\n\022appeared_at_height\030\002 \001(\005\022\036\n\026ove",
+      "rriding_transaction\030\003 \001(\014\022\r\n\005depth\030\004 \001(\005" +
+      "\022\021\n\twork_done\030\005 \001(\003\022)\n\014broadcast_by\030\006 \003(" +
+      "\0132\023.wallet.PeerAddress\0224\n\006source\030\007 \001(\0162$" +
+      ".wallet.TransactionConfidence.Source\"Y\n\004" +
+      "Type\022\013\n\007UNKNOWN\020\000\022\014\n\010BUILDING\020\001\022\025\n\021NOT_S" +
+      "EEN_IN_CHAIN\020\002\022\025\n\021NOT_IN_BEST_CHAIN\020\003\022\010\n" +
+      "\004DEAD\020\004\"A\n\006Source\022\022\n\016SOURCE_UNKNOWN\020\000\022\022\n" +
+      "\016SOURCE_NETWORK\020\001\022\017\n\013SOURCE_SELF\020\002\"\211\003\n\013T" +
+      "ransaction\022\017\n\007version\030\001 \002(\005\022\014\n\004hash\030\002 \002(" +
+      "\014\022&\n\004pool\030\003 \001(\0162\030.wallet.Transaction.Poo",
+      "l\022\021\n\tlock_time\030\004 \001(\r\022\022\n\nupdated_at\030\005 \001(\003" +
+      "\0223\n\021transaction_input\030\006 \003(\0132\030.wallet.Tra" +
+      "nsactionInput\0225\n\022transaction_output\030\007 \003(" +
+      "\0132\031.wallet.TransactionOutput\022\022\n\nblock_ha" +
+      "sh\030\010 \003(\014\0221\n\nconfidence\030\t \001(\0132\035.wallet.Tr" +
+      "ansactionConfidence\"Y\n\004Pool\022\013\n\007UNSPENT\020\004" +
+      "\022\t\n\005SPENT\020\005\022\014\n\010INACTIVE\020\002\022\010\n\004DEAD\020\n\022\013\n\007P" +
+      "ENDING\020\020\022\024\n\020PENDING_INACTIVE\020\022\"N\n\020Scrypt" +
+      "Parameters\022\014\n\004salt\030\001 \002(\014\022\020\n\001n\030\002 \001(\003:\005163" +
+      "84\022\014\n\001r\030\003 \001(\005:\0018\022\014\n\001p\030\004 \001(\005:\0011\"8\n\tExtens",
+      "ion\022\n\n\002id\030\001 \002(\t\022\014\n\004data\030\002 \002(\014\022\021\n\tmandato" +
+      "ry\030\003 \002(\010\"\255\003\n\006Wallet\022\032\n\022network_identifie" +
+      "r\030\001 \002(\t\022\034\n\024last_seen_block_hash\030\002 \001(\014\022\036\n" +
+      "\026last_seen_block_height\030\014 \001(\r\022\030\n\003key\030\003 \003" +
+      "(\0132\013.wallet.Key\022(\n\013transaction\030\004 \003(\0132\023.w" +
+      "allet.Transaction\022C\n\017encryption_type\030\005 \001" +
+      "(\0162\035.wallet.Wallet.EncryptionType:\013UNENC" +
+      "RYPTED\0227\n\025encryption_parameters\030\006 \001(\0132\030." +
+      "wallet.ScryptParameters\022\017\n\007version\030\007 \001(\005" +
+      "\022$\n\textension\030\n \003(\0132\021.wallet.Extension\022\023",
+      "\n\013description\030\013 \001(\t\";\n\016EncryptionType\022\017\n" +
+      "\013UNENCRYPTED\020\001\022\030\n\024ENCRYPTED_SCRYPT_AES\020\002" +
+      "B\035\n\023org.bitcoinj.walletB\006Protos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -8395,7 +8460,7 @@ public final class Protos {
           internal_static_wallet_TransactionOutput_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wallet_TransactionOutput_descriptor,
-              new java.lang.String[] { "Value", "ScriptBytes", "SpentByTransactionHash", "SpentByTransactionIndex", },
+              new java.lang.String[] { "Value", "Currency", "ScriptBytes", "SpentByTransactionHash", "SpentByTransactionIndex", },
               org.bitcoinj.wallet.Protos.TransactionOutput.class,
               org.bitcoinj.wallet.Protos.TransactionOutput.Builder.class);
           internal_static_wallet_TransactionConfidence_descriptor =
